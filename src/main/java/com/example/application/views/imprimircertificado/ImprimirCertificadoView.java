@@ -1,12 +1,17 @@
 package com.example.application.views.imprimircertificado;
 
 import com.example.application.views.MainLayout;
+import com.example.application.views.Models.Persona;
+import com.example.application.views.Models.RegistroPersona;
+import com.example.application.views.Models.Certificado;
+import com.example.application.views.utils.Utils;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -14,60 +19,80 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.Optional;
 
 @PageTitle("Imprimir Certificado")
 @Route(value = "Imprimir-Certificado", layout = MainLayout.class)
 @Uses(Icon.class)
 public class ImprimirCertificadoView extends Composite<VerticalLayout> {
 
+    // Elementos de la UI
+    private Select<String> selectTipoCertificado;
+    private TextField textFieldCedula;
+    private Button buttonGenerar;
+    private VerticalLayout layoutResultado;
+
     public ImprimirCertificadoView() {
-        H2 h2 = new H2();
-        H4 h4 = new H4();
-        Select select = new Select();
-        TextField textField = new TextField();
-        Button buttonPrimary = new Button();
-        Button buttonSecondary = new Button();
-        getContent().setWidth("100%");
-        getContent().getStyle().set("flex-grow", "1");
-        h2.setText("Generación de Certificados");
-        getContent().setAlignSelf(FlexComponent.Alignment.CENTER, h2);
-        h2.setWidth("max-content");
-        h4.setText("Elija que certificado quiere obtener:");
-        h4.setWidth("max-content");
-        select.setLabel("Opciones");
-        select.setWidth("min-content");
-        setSelectSampleData(select);
-        textField.setLabel("Ingrese la cedula de la persona");
-        textField.setWidth("400px");
-        textField.setMaxWidth("220px");
-        buttonPrimary.setText("Continuar");
-        getContent().setAlignSelf(FlexComponent.Alignment.CENTER, buttonPrimary);
-        buttonPrimary.setWidth("min-content");
-        buttonPrimary.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonSecondary.setText("Cancelar");
-        getContent().setAlignSelf(FlexComponent.Alignment.CENTER, buttonSecondary);
-        buttonSecondary.setWidth("min-content");
-        getContent().add(h2);
-        getContent().add(h4);
-        getContent().add(select);
-        getContent().add(textField);
-        getContent().add(buttonPrimary);
-        getContent().add(buttonSecondary);
+        H2 titulo = new H2("Generación de Certificados");
+        H4 subtitulo = new H4("Elija que certificado quiere obtener:");
+
+        // Selector de tipo de certificado
+        selectTipoCertificado = new Select<>();
+        selectTipoCertificado.setItems("Ciudadano", "Nacimiento", "Profesión", "Estado Civil");
+        selectTipoCertificado.setLabel("Tipo de Certificado");
+
+        // Campo de texto para la cédula
+        textFieldCedula = new TextField("Ingrese la cédula de la persona");
+
+        // Botón para generar certificado
+        buttonGenerar = new Button("Generar", event -> generarCertificado());
+        buttonGenerar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        // Layout para mostrar el resultado
+        layoutResultado = new VerticalLayout();
+
+        VerticalLayout layout = getContent();
+        layout.setWidth("100%");
+        layout.getStyle().set("flex-grow", "1");
+        layout.add(titulo, subtitulo, selectTipoCertificado, textFieldCedula, buttonGenerar, layoutResultado);
     }
 
-    record SampleItem(String value, String label, Boolean disabled) {
-    }
+    private void generarCertificado() {
+        String cedula = textFieldCedula.getValue();
+        String tipoCertificado = selectTipoCertificado.getValue();
+        layoutResultado.removeAll();
 
-    private void setSelectSampleData(Select select) {
-        List<SampleItem> sampleItems = new ArrayList<>();
-        sampleItems.add(new SampleItem("first", "First", null));
-        sampleItems.add(new SampleItem("second", "Second", null));
-        sampleItems.add(new SampleItem("third", "Third", Boolean.TRUE));
-        sampleItems.add(new SampleItem("fourth", "Fourth", null));
-        select.setItems(sampleItems);
-        select.setItemLabelGenerator(item -> ((SampleItem) item).label());
-        select.setItemEnabledProvider(item -> !Boolean.TRUE.equals(((SampleItem) item).disabled()));
+        Persona persona = Utils.listaPersonas.stream()
+                .filter(p -> p.getCedula().equals(cedula))
+                .findFirst()
+                .orElse(null);
+
+        if (persona != null) {
+            Certificado certificado = new Certificado(persona);
+            String textoCertificado;
+
+            switch (tipoCertificado) {
+                case "Ciudadano":
+                    textoCertificado = certificado.generarCertificadoCiudadano();
+                    break;
+                case "Nacimiento":
+                    textoCertificado = certificado.generarCertificadoNacimiento();
+                    break;
+                case "Profesión":
+                    textoCertificado = certificado.generarCertificadoProfesion();
+                    break;
+                case "Estado Civil":
+                    textoCertificado = certificado.generarCertificadoEstadoCivil();
+                    break;
+                default:
+                    textoCertificado = "Tipo de certificado no válido.";
+                    break;
+            }
+
+            layoutResultado.add(new Paragraph(textoCertificado));
+        } else {
+            layoutResultado.add(new Paragraph("No se encontró a la persona con la cédula proporcionada."));
+        }
     }
 }

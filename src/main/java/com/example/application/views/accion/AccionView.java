@@ -1,49 +1,41 @@
 package com.example.application.views.accion;
+import com.vaadin.flow.component.icon.Icon;
 
 import com.example.application.views.MainLayout;
+import com.example.application.views.verciudadanos.VerCiudadanosView;
+import com.example.application.views.agregarciudadano.AgregarCiudadanoView;
+import com.example.application.views.buscarciudadano.BuscarCiudadanoView;
+import com.example.application.views.imprimircertificado.ImprimirCertificadoView;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H4;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
-import com.vaadin.flow.component.radiobutton.RadioGroupVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.router.RouterLink;
 
-@PageTitle("Accion")
-@Route(value = "Accion", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
-@Uses(Icon.class)
+@PageTitle("Acción")
+@Route(value = "", layout = MainLayout.class) // Ruta raíz
+@RouteAlias(value = "accion", layout = MainLayout.class) // Alias adicional
 public class AccionView extends Composite<VerticalLayout> {
 
     public AccionView() {
-        H1 h1 = new H1();
-        H4 h4 = new H4();
-        RadioButtonGroup radioGroup = new RadioButtonGroup();
-        Button buttonPrimary = new Button();
-        getContent().setWidth("100%");
-        getContent().getStyle().set("flex-grow", "1");
-        h1.setText("Bienvenido al Registro Civil");
-        h1.setWidth("max-content");
-        h4.setText("Seleccione que operación quiere realizar");
-        h4.setWidth("max-content");
-        radioGroup.setLabel("Radio Group");
-        radioGroup.setWidth("min-content");
-        radioGroup.setItems("Order ID", "Product Name", "Customer", "Status");
-        radioGroup.addThemeVariants(RadioGroupVariant.LUMO_VERTICAL);
-        buttonPrimary.setText("Continuar");
-        getContent().setAlignSelf(FlexComponent.Alignment.CENTER, buttonPrimary);
-        buttonPrimary.setWidth("min-content");
-        buttonPrimary.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        getContent().add(h1);
-        getContent().add(h4);
-        getContent().add(radioGroup);
-        getContent().add(buttonPrimary);
+        H1 h1 = new H1("Bienvenido al Registro Civil");
+        H4 h4 = new H4("Seleccione qué operación desea realizar");
+
+        // Botones o enlaces para las distintas acciones
+        RouterLink agregarCiudadanoLink = new RouterLink("Agregar Ciudadano", AgregarCiudadanoView.class);
+        RouterLink imprimirCertificadoLink = new RouterLink("Imprimir Certificado", ImprimirCertificadoView.class);
+        RouterLink verCiudadanosLink = new RouterLink("Ver Ciudadanos", VerCiudadanosView.class);
+        RouterLink buscarCiudadanoLink = new RouterLink("Buscar Ciudadano", BuscarCiudadanoView.class); // Asumiendo que existe una vista BuscarCiudadanoView
+
+        VerticalLayout layout = getContent();
+        layout.setWidth("100%");
+        layout.setAlignItems(FlexComponent.Alignment.CENTER); // Uso correcto de FlexComponent.Alignment
+        layout.add(h1, h4, agregarCiudadanoLink, imprimirCertificadoLink, verCiudadanosLink, buscarCiudadanoLink);
     }
 }
