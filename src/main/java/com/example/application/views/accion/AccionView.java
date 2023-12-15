@@ -31,8 +31,7 @@ public class AccionView extends Composite<VerticalLayout> {
         RouterLink agregarCiudadanoLink = new RouterLink("Agregar Ciudadano", AgregarCiudadanoView.class);
         RouterLink imprimirCertificadoLink = new RouterLink("Imprimir Certificado", ImprimirCertificadoView.class);
         RouterLink verCiudadanosLink = new RouterLink("Ver Ciudadanos", VerCiudadanosView.class);
-        RouterLink buscarCiudadanoLink = new RouterLink("Buscar Ciudadano", BuscarCiudadanoView.class); // Asumiendo que existe una vista BuscarCiudadanoView
-
+        RouterLink buscarCiudadanoLink = new RouterLink("Buscar Ciudadano", BuscarCiudadanoView.class);
         VerticalLayout layout = getContent();
         layout.setWidth("100%");
         layout.setAlignItems(FlexComponent.Alignment.CENTER); // Uso correcto de FlexComponent.Alignment

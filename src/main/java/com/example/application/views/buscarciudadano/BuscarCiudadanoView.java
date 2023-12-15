@@ -41,13 +41,13 @@ public class BuscarCiudadanoView extends Composite<VerticalLayout> {
         H2 h2 = new H2("Buscar Ciudadano");
         H4 h4 = new H4("Seleccione el criterio de búsqueda y proporcione la información correspondiente:");
 
-        // Configuración del selector de criterios
+        //Elije que opcion quiere para buscar
         selectCriterioBusqueda = new Select<>();
         selectCriterioBusqueda.setItems("Cédula", "Nombre", "Fecha de Nacimiento", "Lugar de Nacimiento", "Profesión");
         selectCriterioBusqueda.setLabel("Criterio de búsqueda");
         selectCriterioBusqueda.addValueChangeListener(e -> actualizarInterfazBusqueda());
 
-        // Campos de texto y fecha para la búsqueda
+        // Texto y fecha para usar en la busqueda
         textFieldBusqueda = new TextField();
         textFieldBusqueda.setLabel("Valor de búsqueda");
         datePickerBusqueda = new DatePicker();

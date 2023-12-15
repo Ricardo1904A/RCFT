@@ -42,7 +42,7 @@ public AgregarCiudadanoView() {
         textFieldLugarNacimiento = new TextField("Lugar de Nacimiento:");
         textFieldEstadoCivil = new TextField("Estado Civil:");
         textFieldProfesion = new TextField("Profesion:");
-
+        // Botones
         buttonPrimary = new Button("Continuar", event -> agregarCiudadano());
         buttonSecondary = new Button("Cancelar", event -> limpiarFormulario());
 

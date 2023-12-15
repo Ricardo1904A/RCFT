@@ -27,7 +27,7 @@ import java.util.Optional;
 @Uses(Icon.class)
 public class ImprimirCertificadoView extends Composite<VerticalLayout> {
 
-    // Elementos de la UI
+
     private Select<String> selectTipoCertificado;
     private TextField textFieldCedula;
     private Button buttonGenerar;
@@ -37,19 +37,19 @@ public class ImprimirCertificadoView extends Composite<VerticalLayout> {
         H2 titulo = new H2("Generación de Certificados");
         H4 subtitulo = new H4("Elija que certificado quiere obtener:");
 
-        // Selector de tipo de certificado
+        // seleccion del tipo de certificado
         selectTipoCertificado = new Select<>();
         selectTipoCertificado.setItems("Ciudadano", "Nacimiento", "Profesión", "Estado Civil");
         selectTipoCertificado.setLabel("Tipo de Certificado");
 
-        // Campo de texto para la cédula
+        // campo de texto para ingresar la cedula
         textFieldCedula = new TextField("Ingrese la cédula de la persona");
 
-        // Botón para generar certificado
+        // generar certificado
         buttonGenerar = new Button("Generar", event -> generarCertificado());
         buttonGenerar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        // Layout para mostrar el resultado
+        //  mostrar el resultado
         layoutResultado = new VerticalLayout();
 
         VerticalLayout layout = getContent();
