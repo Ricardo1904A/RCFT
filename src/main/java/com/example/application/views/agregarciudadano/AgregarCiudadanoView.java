@@ -68,6 +68,7 @@ private void agregarCiudadano() {
         Utils.listaPersonas.add(nuevaPersona);
         Notification.show("Ciudadano agregado con éxito.");
 
+
         limpiarFormulario();
         }
 

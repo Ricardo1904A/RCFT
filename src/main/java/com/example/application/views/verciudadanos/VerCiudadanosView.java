@@ -4,8 +4,8 @@ import com.example.application.views.MainLayout;
 import com.example.application.views.Models.Persona;
 import com.example.application.views.utils.Utils;
 import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -16,33 +16,26 @@ import com.vaadin.flow.router.Route;
 @Route(value = "Ver-Ciudadanos", layout = MainLayout.class)
 public class VerCiudadanosView extends Composite<VerticalLayout> implements BeforeEnterObserver {
 
-    private Grid<Persona> grid;
+    private VerticalLayout listaCiudadanosLayout;
 
     public VerCiudadanosView() {
         H2 titulo = new H2("Ciudadanos actuales");
-        grid = new Grid<>(Persona.class, false);
-        configurarGrid();
+        listaCiudadanosLayout = new VerticalLayout();
 
         VerticalLayout layout = getContent();
         layout.setWidth("100%");
-        layout.add(titulo, grid);
-    }
-
-    private void configurarGrid() {
-        grid.addColumn(Persona::getCedula).setHeader("Cédula");
-        grid.addColumn(Persona::getNombre).setHeader("Nombre");
-        grid.addColumn(Persona::getFechaNacimiento).setHeader("Fecha de Nacimiento");
-        grid.addColumn(Persona::getLugarNacimiento).setHeader("Lugar de Nacimiento");
-        grid.addColumn(Persona::getEstadoCivil).setHeader("Estado Civil");
-        grid.addColumn(Persona::getProfesion).setHeader("Profesión");
-
-        grid.setSizeFull();
+        layout.add(titulo, listaCiudadanosLayout);
     }
 
     private void actualizarListaCiudadanos() {
-        // Agregando log de depuración
-        System.out.println("Actualizando lista de ciudadanos. Tamaño actual: " + Utils.listaPersonas.size());
-        grid.setItems(Utils.listaPersonas);
+        listaCiudadanosLayout.removeAll();
+        int contador = 1;
+        for (Persona persona : Utils.listaPersonas) {
+            String textoPersona = "Persona " + contador + ": " + persona.toString();
+            Paragraph parrafo = new Paragraph(textoPersona);
+            listaCiudadanosLayout.add(parrafo);
+            contador++;
+        }
     }
 
     @Override
